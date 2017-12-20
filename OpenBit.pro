@@ -22,13 +22,27 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+CONFIG += c++14
+
+LIBS += -L/usr/lib/x86_64-linux-gnu/ -ltorrent-rasterbar -lboost_system
+
+INCLUDEPATH += /usr/include/libtorrent/ \
+                /usr/include/boost/
 
 SOURCES += \
-        src/main.cpp \
-        src/mainwindow.cpp
+        src/ui/main.cpp \
+        src/ui/openbitmainwindow.cpp \
+        src/ui/addtorrentdialog.cpp \
+        src/engine/openbitengine.cpp \
+        src/ui/settingsdialog.cpp
 
-HEADERS += \
-        include/mainwindow.h
+HEADERS += \        
+        includes/openbitmainwindow.h \
+        includes/addtorrentdialog.h \
+        includes/openbitengine.h \
+        includes/settingsdialog.h
 
-FORMS += \
-        forms/mainwindow.ui
+FORMS += \        
+        forms/openbitmainwindow.ui \
+        forms/addtorrentdialog.ui \
+        forms/settingsdialog.ui
