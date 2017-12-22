@@ -1,56 +1,50 @@
 #include "includes/addtorrentdialog.h"
 #include "ui_addtorrentdialog.h"
 
-AddTorrentDialog::AddTorrentDialog(QDialog *parent) :
-    QDialog(parent),
-    ui(new Ui::AddTorrentDialog)
-{
+AddTorrentDialog::AddTorrentDialog(QDialog *parent) : QDialog(parent), ui(new Ui::AddTorrentDialog) {
     ui->setupUi(this);
     this->setFixedSize(this->size());
     ui->addTorrentPushButton->setEnabled(false);
     ui->fileChosenLabel->setVisible(false);
     ui->fileChosenLabel->setWordWrap(true);
+    gv = GlobalVariables::Instance();
 }
 
-AddTorrentDialog::~AddTorrentDialog()
-{
+AddTorrentDialog::~AddTorrentDialog() {
     delete ui;
 }
 
-void AddTorrentDialog::on_cancelPushButton_clicked()
-{
+void AddTorrentDialog::on_cancelPushButton_clicked() {
     this->reject();
 }
 
-void AddTorrentDialog::on_addTorrentPushButton_clicked()
-{
-    switch (currentTab) {
+void AddTorrentDialog::on_addTorrentPushButton_clicked() {
+
+    switch (ui->addTorrentTabWidget->currentIndex()) {
         case 0:
-            //.Torrent tab.
+            //.Torrent tab.    
             atp_object.ti = boost::make_shared<libtorrent::torrent_info>(torrentData.toStdString(), boost::ref(ec), 0);
             break;
 
         case 1:
             //Mag Link Tab tab.
-            atp_object.url = ui->magLinkTextEdit->toPlainText().toStdString();
-
+            atp_object.url = ui->magLinkLineEdit->text().toStdString();            
             break;
 
         case 2:
             //Info Hash Tab tab.
+            //TODO
             break;
 
         default:
             break;
-    }
-
-    OpenBitEngine::addNewAtp(atp_object);
+    }    
+    atp_object.save_path = OpenBitEngine::session_user_settings->getUserSettings(DOWNLOAD_LOCATION, QVariant(gv->defaultUserSettingsValueMap.at(DOWNLOAD_LOCATION))).toString().toStdString();
+    OpenBitEngine::addNewAtp(atp_object);    
     this->accept();
 }
 
-void AddTorrentDialog::on_addTorrentTabWidget_currentChanged(int index)
-{
-    currentTab = index;
+void AddTorrentDialog::on_addTorrentTabWidget_currentChanged(int index) {
 
     switch (index) {
         case 0:
@@ -82,40 +76,35 @@ void AddTorrentDialog::on_addTorrentTabWidget_currentChanged(int index)
     }
 }
 
-QString AddTorrentDialog::getFileExtension(const QString &file)
-{
+const QString AddTorrentDialog::getFileExtension(const QString &file) {
     return file.right(file.length() - file.lastIndexOf("."));
 }
 
-QString AddTorrentDialog::getFileFromPath(const QString &file)
-{
+const QString AddTorrentDialog::getFileFromPath(const QString &file) {
     return file.right(file.length() - file.lastIndexOf('/'));
 }
 
-void AddTorrentDialog::enableAcceptButton(bool value)
-{
+void AddTorrentDialog::enableAcceptButton(bool value) {
     ui->addTorrentPushButton->setEnabled(value);
 }
 
-void AddTorrentDialog::on_chooseFileQushButton_clicked()
-{
+void AddTorrentDialog::on_chooseFileQushButton_clicked() {
+
     torrentData = QFileDialog::getOpenFileName(nullptr, QString("Choose Torrent"), QString(), tr("Torrent Files (*.torrent)"));
-    ui->fileChosenLabel->setVisible(true);
-    // Torrent can be added if the file extension is a .torrent
-    ui->fileChosenLabel->setText(getFileFromPath(torrentData));
+    ui->fileChosenLabel->setVisible(true);    
+    ui->fileChosenLabel->setText(getFileFromPath(torrentData));     // Torrent can be added if the file extension is a .torrent
     if(QString::compare(getFileExtension(torrentData), ".torrent") == 0){
         isDotTorrentValid = true;
         enableAcceptButton(true);
     }
 }
 
+void AddTorrentDialog::on_magLinkLineEdit_textChanged(const QString &arg1) {
 
-void AddTorrentDialog::on_magLinkTextEdit_textChanged()
-{
     //Enabling the add button for the mag link if there is any text in the text edit.
     enableAcceptButton(true);
     isMagLinkValid = true;
-    if(ui->magLinkTextEdit->toPlainText().isEmpty()){
+    if(ui->magLinkLineEdit->text().isEmpty()){
         enableAcceptButton(false);
         isMagLinkValid = false;
         return;

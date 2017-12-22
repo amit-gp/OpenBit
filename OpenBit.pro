@@ -34,13 +34,17 @@ SOURCES += \
         src/ui/openbitmainwindow.cpp \
         src/ui/addtorrentdialog.cpp \
         src/engine/openbitengine.cpp \
-        src/ui/settingsdialog.cpp
+        src/ui/settingsdialog.cpp \
+        src/engine/settingshandler.cpp \
+        src/engine/globalvariables.cpp
 
 HEADERS += \        
         includes/openbitmainwindow.h \
         includes/addtorrentdialog.h \
         includes/openbitengine.h \
-        includes/settingsdialog.h
+        includes/settingsdialog.h \
+        includes/settingshandler.h \
+        includes/globalvariables.h
 
 FORMS += \        
         forms/openbitmainwindow.ui \

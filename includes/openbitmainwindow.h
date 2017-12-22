@@ -8,8 +8,8 @@ namespace Ui {
 class OpenBitMainWindow;
 }
 
-class OpenBitMainWindow : public QMainWindow
-{
+class OpenBitMainWindow : public QMainWindow {
+
     Q_OBJECT
 
 public:
@@ -18,7 +18,6 @@ public:
 
 private slots:
     void on_actionAdd_triggered();
-
     void on_actionSettings_triggered();
 
 private:

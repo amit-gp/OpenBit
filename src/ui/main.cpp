@@ -1,23 +1,22 @@
 #include <includes/openbitmainwindow.h>
 #include <QApplication>
+#include <QDebug>
 #include<includes/openbitengine.h>
 
-#define COMPANY_NAME "thebournegenius_software"
-#define PRODUCT_NAME "OpenBit"
-#define COMPANY_DOMAIN "github.com/thebournegenius/OpenBit"
+int main(int argc, char *argv[]) {
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    QCoreApplication::setApplicationName(PRODUCT_NAME);
-    QCoreApplication::setOrganizationName(COMPANY_NAME);
-    QCoreApplication::setOrganizationDomain(COMPANY_DOMAIN);
-
+    GlobalVariables *gv = GlobalVariables::Instance();
+    qDebug() << "Inside Main";
+    QApplication a(argc, argv);    
+    qDebug() << "Created QApp";    
     // Starting the OpenBit Engine.
     OpenBitEngine openBitEngine;
-
+    qDebug() << "Started Engine";
+    QCoreApplication::setApplicationName(gv->PRODUCT_NAME);
+    QCoreApplication::setOrganizationName(gv->COMPANY_NAME);
+    QCoreApplication::setOrganizationDomain(gv->COMPANY_DOMAIN);
+    qDebug() << "Set CoreApp properties";
     OpenBitMainWindow w;
     w.show();
-
     return a.exec();
 }

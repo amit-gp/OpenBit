@@ -80,7 +80,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPlainTextEdit" name="magLinkTextEdit"/>
+           <widget class="QLineEdit" name="magLinkLineEdit"/>
           </item>
          </layout>
         </widget>
